@@ -16,14 +16,17 @@ class BooksApp extends Component {
 	})
   }
 
-  addBook = () => this.setState({showSearchPage: true})
-  
+  addBook = () => { 
+	this.setState(state => ({
+		showSearchPage: true
+	}))
+  }
 
   render() {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-		  <SearchBooks />
+		  <SearchBooks/>
         ) : (
 		<ListBooks
 			books={this.state.books}
