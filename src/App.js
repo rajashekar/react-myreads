@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-// import { Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import ListBooks from './ListBooks'
 import SearchBooks from './SearchBooks'
@@ -17,14 +16,18 @@ class BooksApp extends Component {
 	})
   }
 
+  addBook = () => this.setState({showSearchPage: true})
+  
+
   render() {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-		  <SearchBooks/>
+		  <SearchBooks />
         ) : (
 		<ListBooks
 			books={this.state.books}
+			onAddBook={this.addBook}
 		/>
         )}
       </div>
