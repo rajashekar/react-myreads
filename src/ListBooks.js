@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
 
 class ListBooks extends Component {
   render() {
-    const { books, onAddBook } = this.props
+    const { books } = this.props
     const bookShelves = {
       "Currently Reading": books.filter(book => book.shelf === 'currentlyReading'),
       "Want to Read": books.filter(book => book.shelf === 'wantToRead'),
@@ -52,7 +53,9 @@ class ListBooks extends Component {
              </div>
             </div>
             <div className="open-search">
-				<a onClick={() => onAddBook()} href="#searchbook">Add a book</a>
+              <Link to='/addbook'>
+                Add a book
+              </Link>
             </div>
           </div>
      )
