@@ -3,17 +3,17 @@ import {Link} from 'react-router-dom'
 
 class ListBooks extends Component {
   render() {
-    const { books } = this.props
-    const bookShelves = {
-      "Currently Reading": books.filter(book => book.shelf === 'currentlyReading'),
-      "Want to Read": books.filter(book => book.shelf === 'wantToRead'),
-      "Read": books.filter(book => book.shelf === 'read')
-    }
+    const { bookShelves } = this.props
+	const shelfMap = {
+		currentlyReading: "Currently Reading",
+		wantToRead: "Want To Read",
+		read: "Read"
+	}
 
     return (
         <div className="list-books">
-        {console.log(this.props)}
-        {console.log(bookShelves)}
+		{console.log(shelfMap)}
+		{console.log(bookShelves)}
            <div className="list-books-title">
               <h1>MyReads</h1>
            </div>
@@ -21,7 +21,7 @@ class ListBooks extends Component {
              <div>
                {Object.keys(bookShelves).map(bookshelf => (
                  <div key={bookshelf} className="bookshelf">
-                   <h2 className="bookshelf-title">{bookshelf}</h2>
+                   <h2 className="bookshelf-title">{shelfMap[bookshelf]}</h2>
                    <div className="bookshelf-books">
                      <ol className="books-grid">
                        {bookShelves[bookshelf].map((book) => (

@@ -7,20 +7,23 @@ import './App.css'
 
 class BooksApp extends Component {
   state = {
-    books: [],
-    showSearchPage: false
+	bookShelves: {}
   }
 
   componentDidMount() {
 	BooksAPI.getAll().then((books) => {
-		this.setState({books})
+		this.setState({
+			bookShelves : {
+				currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
+				wantToRead: books.filter(book => book.shelf === 'wantToRead'),
+				read: books.filter(book => book.shelf === 'read')
+			}
+		})
 	})
   }
 
-  addBook = () => { 
-	this.setState(state => ({
-		showSearchPage: true
-	}))
+  onUpdateShelf = (book,shelf) => {
+	BooksAPI.update(book,shelf).then()
   }
 
   render() {
@@ -28,7 +31,7 @@ class BooksApp extends Component {
       <div className="app">
 		<Route exact path="/" render={() => (
 			<ListBooks
-				books={this.state.books}
+				bookShelves={this.state.bookShelves}
 			/>
 		)}/>
 		<Route path="/addbook" render={() => (
