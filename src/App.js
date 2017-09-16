@@ -6,37 +6,51 @@ import SearchBooks from './SearchBooks'
 import './App.css'
 
 class BooksApp extends Component {
+
   state = {
-	bookShelves: {}
+    books : []
   }
 
   componentDidMount() {
-	BooksAPI.getAll().then((books) => {
-		this.setState({
-			bookShelves : {
-				currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
-				wantToRead: books.filter(book => book.shelf === 'wantToRead'),
-				read: books.filter(book => book.shelf === 'read')
-			}
-		})
-	})
+    BooksAPI.getAll().then((books) => {
+        this.setState({books})
+    })
   }
 
-  onUpdateShelf = (book,shelf) => {
-	BooksAPI.update(book,shelf).then()
-  }
+  /**
+   * Move books between shelf
+   */
+  onUpdateShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf).then((res) => console.log(res))
+    this.setState(this.updateState(book, shelf))
+   }
+  updateState = (book, shelf) => (state => ({books: state.books.reduce(this.updateShelf(book,shelf),[])}))
+  updateShelf = (selectedbook,selectedshelf) => (
+    (allbooks,book) =>  {
+        if(book.id===selectedbook.id) {
+            book.shelf = selectedshelf
+        }
+        allbooks.push(book)
+        return allbooks
+    })
 
   render() {
+    const bookShelves = {
+            currentlyReading: this.state.books.filter(book => book.shelf === 'currentlyReading'),
+            wantToRead: this.state.books.filter(book => book.shelf === 'wantToRead'),
+            read: this.state.books.filter(book => book.shelf === 'read')
+        }
     return (
       <div className="app">
-		<Route exact path="/" render={() => (
-			<ListBooks
-				bookShelves={this.state.bookShelves}
-			/>
-		)}/>
-		<Route path="/addbook" render={() => (
-		  <SearchBooks/>
-		)}/>
+          <Route exact path="/" render={() => (
+            <ListBooks
+                bookShelves={bookShelves}
+                onUpdateShelf={this.onUpdateShelf}
+            />
+            )}/>
+        <Route path="/addbook" render={() => (
+          <SearchBooks />
+          )}/>
       </div>
     )
   }
