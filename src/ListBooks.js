@@ -12,8 +12,6 @@ class ListBooks extends Component {
 
     return (
         <div className="list-books">
-            {console.log(shelfMap)}
-            {console.log(bookShelves)}
             <div className="list-books-title">
                 <h1>MyReads</h1>
             </div>

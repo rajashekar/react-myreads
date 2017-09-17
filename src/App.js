@@ -8,9 +8,14 @@ import './App.css'
 class BooksApp extends Component {
 
   state = {
-    books : []
+    books : [], // to hold main page books
+    query : '',
+    searchResults : []
   }
 
+  /**
+   * Calls getAll & loads books which were already added
+   */
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
         this.setState({books})
@@ -18,7 +23,7 @@ class BooksApp extends Component {
   }
 
   /**
-   * Move books between shelf
+   * Updates books shelfs
    */
   onUpdateShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((res) => console.log(res))
@@ -34,11 +39,24 @@ class BooksApp extends Component {
         return allbooks
     })
 
+    /**
+     * To search books
+     */
+    searchBooks = (query) => {
+        this.setState({query})
+        console.log(query)
+        BooksAPI.search(query).then((searchResults) => {
+            this.setState({searchResults})
+        })
+    }
+
   render() {
+    const {books,query,searchResults} = this.state
+    // move book to its own section
     const bookShelves = {
-            currentlyReading: this.state.books.filter(book => book.shelf === 'currentlyReading'),
-            wantToRead: this.state.books.filter(book => book.shelf === 'wantToRead'),
-            read: this.state.books.filter(book => book.shelf === 'read')
+            currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
+            wantToRead: books.filter(book => book.shelf === 'wantToRead'),
+            read: books.filter(book => book.shelf === 'read')
         }
     return (
       <div className="app">
@@ -49,7 +67,11 @@ class BooksApp extends Component {
             />
             )}/>
         <Route path="/addbook" render={() => (
-          <SearchBooks />
+          <SearchBooks 
+              query={query}
+              onSearch={this.searchBooks}
+              searchResults={searchResults}
+          />
           )}/>
       </div>
     )
