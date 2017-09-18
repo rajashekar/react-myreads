@@ -3,10 +3,9 @@ import {Link} from 'react-router-dom'
 
 class SearchBooks extends Component {
 
-	render() {
+    render() {
         const {query,onSearch,searchResults,onAddBook} = this.props
-
-		return (
+        return (
           <div className="search-books">
             <div className="search-books-bar">
               <Link className="close-search" to='/'>Close</Link>
@@ -46,8 +45,8 @@ class SearchBooks extends Component {
                 </ol>
             </div>
           </div>
-		)
-	}
+        )
+    }
 }
 
 export default SearchBooks
