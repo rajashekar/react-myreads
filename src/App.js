@@ -27,15 +27,24 @@ class BooksApp extends Component {
    */
   onUpdateShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((res) => console.log(res))
-    this.setState(this.updateState(book, shelf))
-   }
-  updateState = (book, shelf) => (state => ({books: state.books.reduce(this.updateShelf(book,shelf),[])}))
-  updateShelf = (selectedbook,selectedshelf) => (
+    this.setState(state => ({
+        books: this.updateState('list',state.books,book, shelf)
+    }))
+    }
+
+  updateState = (fromPage, currentBooks, book, shelf) => currentBooks.reduce(this.updateShelf(fromPage, book,shelf),[])
+
+  updateShelf = (fromPage, selectedbook,selectedshelf) => (
     (allbooks,book) =>  {
         if(book.id===selectedbook.id) {
             book.shelf = selectedshelf
         }
-        allbooks.push(book)
+        if(fromPage === 'list' && book.shelf !== 'none') {
+            allbooks.push(book)
+        }
+        if(fromPage === 'search' && !book.shelf) {
+            allbooks.push(book)
+        }
         return allbooks
     })
 
@@ -50,9 +59,22 @@ class BooksApp extends Component {
         })
     }
 
+    /**
+     * Add a book
+     */
+    addBook = (book,shelf) => {
+        console.log('In add book',book)
+        console.log('In add book',shelf)
+        console.log('In add book',{...book,...{shelf}})
+        this.setState(state => ({
+            books: state.books.concat([{...book,...{shelf}}]),
+            searchResults: this.updateState('search', state.searchResults, book, shelf)
+        }))
+    }
+
   render() {
     const {books,query,searchResults} = this.state
-    // move book to its own section
+    // move books to its own section
     const bookShelves = {
             currentlyReading: books.filter(book => book.shelf === 'currentlyReading'),
             wantToRead: books.filter(book => book.shelf === 'wantToRead'),
@@ -71,6 +93,7 @@ class BooksApp extends Component {
               query={query}
               onSearch={this.searchBooks}
               searchResults={searchResults}
+              onAddBook={this.addBook}
           />
           )}/>
       </div>

@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 class SearchBooks extends Component {
 
 	render() {
-        const {query,onSearch,searchResults} = this.props
+        const {query,onSearch,searchResults,onAddBook} = this.props
 
 		return (
           <div className="search-books">
@@ -28,7 +28,7 @@ class SearchBooks extends Component {
                                         style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks['thumbnail']})` }}>
                                     </div>
                                     <div className="book-shelf-changer">
-                                        <select value="none">
+                                        <select onChange={(e) => onAddBook(book,e.target.value)} value="none">
                                             <option value="none" disabled>Move to...</option>
                                             <option value="currentlyReading">Currently Reading</option>
                                             <option value="wantToRead">Want to Read</option>
