@@ -8,4 +8,5 @@ To get started developing right away:
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
+## Demo of my reads project
 ![Demo](https://github.com/rajashekar/react-myreads/blob/master/public/myreads.gif)
