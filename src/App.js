@@ -63,10 +63,17 @@ class BooksApp extends Component {
      * Add a book
      */
     addBook = (book,shelf) => {
-        this.setState(state => ({
-            books: state.books.concat([{...book,...{shelf}}]),
-            searchResults: this.updateState('search', state.searchResults, book, shelf)
-        }))
+        if(!book.shelf || book.shelf === 'none') {
+            this.setState(state => ({
+                books: state.books.concat([{...book,...{shelf}}]),
+                searchResults: this.updateState('search', state.searchResults, book, shelf)
+            }))
+        } else {
+            this.setState(state => ({
+                books: this.updateState('list',state.books,book, shelf),
+                searchResults: this.updateState('search', state.searchResults, book, shelf)
+            }))
+        }
     }
 
 
