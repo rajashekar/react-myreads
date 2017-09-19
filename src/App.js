@@ -28,7 +28,8 @@ class BooksApp extends Component {
   onUpdateShelf = (book, shelf) => {
     BooksAPI.update(book, shelf).then((res) => console.log(res))
     this.setState(state => ({
-        books: this.updateState('list',state.books,book, shelf)
+        books: this.updateState('list',state.books,book, shelf),
+        searchResults: this.updateState('search', state.searchResults, book, shelf)
     }))
     }
 
@@ -42,7 +43,7 @@ class BooksApp extends Component {
         if(fromPage === 'list' && book.shelf !== 'none') {
             allbooks.push(book)
         }
-        if(fromPage === 'search' && !book.shelf) {
+        if(fromPage === 'search') {
             allbooks.push(book)
         }
         return allbooks
@@ -53,7 +54,6 @@ class BooksApp extends Component {
      */
     searchBooks = (query) => {
         this.setState({query})
-        console.log(query)
         BooksAPI.search(query).then((searchResults) => {
             this.setState({searchResults})
         })
@@ -63,14 +63,12 @@ class BooksApp extends Component {
      * Add a book
      */
     addBook = (book,shelf) => {
-        console.log('In add book',book)
-        console.log('In add book',shelf)
-        console.log('In add book',{...book,...{shelf}})
         this.setState(state => ({
             books: state.books.concat([{...book,...{shelf}}]),
             searchResults: this.updateState('search', state.searchResults, book, shelf)
         }))
     }
+
 
   render() {
     const {books,query,searchResults} = this.state

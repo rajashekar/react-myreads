@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 class ListBooks extends Component {
   render() {
-    const { bookShelves, onUpdateShelf } = this.props
+    const { bookShelves, onUpdateShelf} = this.props
     const shelfMap = {
         currentlyReading: "Currently Reading",
         wantToRead: "Want To Read",
