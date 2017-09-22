@@ -26,12 +26,14 @@ class BooksApp extends Component {
    * Updates books shelfs
    */
   onUpdateShelf = (book, shelf) => {
-    BooksAPI.update(book, shelf).then((res) => console.log(res))
-    this.setState(state => ({
-        books: this.updateState('list',state.books,book, shelf),
-        searchResults: this.updateState('search', state.searchResults, book, shelf)
-    }))
-    }
+        if(book.shelf !== shelf) {
+            BooksAPI.update(book, shelf).then((res) => console.log(res))
+            this.setState(state => ({
+                books: this.updateState('list',state.books,book, shelf),
+                searchResults: this.updateState('search', state.searchResults, book, shelf)
+            }))
+        }
+   }
 
   updateState = (fromPage, currentBooks, book, shelf) => currentBooks.reduce(this.updateShelf(fromPage, book,shelf),[])
 
